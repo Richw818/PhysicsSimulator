@@ -1,0 +1,292 @@
+<html>
+	<head>
+		<title>Gravity</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+			<link rel="stylesheet" href="css/styles.css">
+			<link rel="icon" href="pictures/Sphere.png">
+		</style>
+	</head>
+   <div>
+       <button onclick="setPosition()">Insert New Sphere</button>
+       <button onclick="orbit()">Orbit Mode</button>
+       <button onclick="orient()">Orient</button>
+       <button onclick = "pause()">Pause</button>
+       <button onclick = "unpause()">Unpause</button>
+       <button onClick="window.location.reload();">Reset</button>
+       <p id = "orbit"></p>
+       <p id = "orbit"></p>
+       <p>x Value:</p>
+       <input type="text" name="xvalue" id="xvalue"/>
+       <p>y Value:</p>
+       <input type="text" name="yvalue" id="yvalue"/>
+       <p>Size:</p>
+       <input type="text" name="size" id="size"/>
+   </div>
+	<body>
+		<script src="js/three.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		<script src="js/slider.js"></script>
+		<script>
+		    var start = true;
+		    var count = 0;
+		    var objects = [];
+			var scene = new THREE.Scene();
+			var spheres = [];
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+            var xone;
+            var xtwo;
+            var yone;
+            var ytwo;
+            var ratio;
+            var radius;
+            var radius2;
+            var startDistance;
+            var theta;
+            var orbitmode = false;
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setClearColor( 0x000000, 1);
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+            var material = new THREE.MeshNormalMaterial();
+            radius = 0.5;
+            var geometry = new THREE.SphereGeometry(radius, 32, 32);
+            var sphere = new THREE.Mesh(geometry, material);
+
+            scene.add(sphere);
+
+            
+            
+			camera.position.z = 10;
+			//camera.position.x = 10;
+			//camera.position.y = 10;
+			
+			
+            var controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+            //controls.update() must be called after any manual changes to the camera's transform
+            //camera.position.set( 0, 20, 100 );
+            controls.update();
+            function init() {
+	            scene.add( new THREE.AmbientLight( 0x0f0f0f ) );
+
+	            var light = new THREE.SpotLight( 0xffffff, 1.5 );
+	            light.position.set( 0, 500, 2000 );
+
+	            //scene.add(light);
+
+	            //var geometry = new THREE.BoxGeometry( 40, 40, 40 );
+	            //var geometry = new THREE.SphereGeometry( 40, 40, 40 );
+
+	            //for (var i = 0; i < 100; i++) {
+		            //var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
+
+		            //object.position.x = Math.random() * 1000 - 500;
+		            //object.position.y = Math.random() * 600 - 300;
+		            //object.position.z = Math.random() * 800 - 400;
+
+		            //object.castShadow = true;
+		            //object.receiveShadow = true;
+
+	            	//scene.add( object );
+
+	            	objects.push( cube );
+	}
+
+    //controls2 = new THREE.DragControls( objects, camera, renderer.domElement );
+	//controls2.addEventListener( 'dragstart', dragStartCallback );
+//	controls2.addEventListener( 'dragend', dragendCallback );
+//}
+function setPosition() {
+    
+    if(!orbitmode)
+    {
+    var x = document.getElementById("xvalue").value;
+    var y = document.getElementById("yvalue").value;
+    var size = document.getElementById("size").value;
+    radius2 = size;
+    var geometry2 = new THREE.SphereGeometry(radius2, 32, 32);
+    var sphere2 = new THREE.Mesh(geometry2, material);
+    sphere2.position.set(x, y, 0);
+    spheres.push(sphere2);
+    var sum = Math.pow(radius, 3) + Math.pow(radius2, 3);
+     xone = sphere.position.x;
+     yone = sphere.position.y;
+     xtwo = spheres[spheres.length - 1].position.x;
+     ytwo = spheres[spheres.length - 1].position.y;
+     ratio = (radius2 / radius);
+    startDistance = Math.sqrt(Math.pow((xone - xtwo), 2) + Math.pow((yone - ytwo), 2));
+     theta = Math.atan2((ytwo - yone), (xtwo - xone));
+     removeScene();
+    addScene();
+    
+    loop();
+    }
+    else{
+    var x = document.getElementById("xvalue").value;
+    var y = document.getElementById("yvalue").value;
+    var size = document.getElementById("size").value;
+    radius2 = size;
+    var geometry2 = new THREE.SphereGeometry(radius2, 32, 32);
+    var sphere2 = new THREE.Mesh(geometry2, material);
+    sphere2.position.set(x, y, 0);
+    spheres.push(sphere2);
+    xone = sphere.position.x;
+     yone = sphere.position.y;
+     xtwo = spheres[spheres.length - 1].position.x;
+     ytwo = spheres[spheres.length - 1].position.y;
+     startDistance = Math.sqrt(Math.pow((xone - xtwo), 2) + Math.pow((yone - ytwo), 2));
+     addScene();
+     removeScene();
+        loopOrbit();
+    }
+}
+function orbit()
+{
+    orbitmode = !orbitmode;
+    if(orbitmode)
+    {
+        document.getElementById("orbit").innerHTML = "Orbit Mode On";
+    }
+    else
+    {
+        document.getElementById("orbit").innerHTML = "Orbit Mode Off";
+    }
+    if(!orbitmode)
+    {
+        incrementx = 0;
+        incrementy = 0;
+        incrementx2 = 0;
+        incrementy2 = 0;
+    }
+}
+function pause()
+{
+    start = false;
+    document.getElementById("orbit").innerHTML = "Animation Paused";
+}
+function unpause()
+{
+    start = true;
+    document.getElementById("orbit").innerHTML = "";
+    loop();
+}
+function orient()
+{
+    camera.position.z = 10;
+    camera.position.x = 0;
+    camera.position.y = 0;
+}
+function loop()
+{
+    if(start) {
+var distance = Math.sqrt(Math.pow((xone - xtwo), 2) + Math.pow((yone - ytwo), 2));
+var dif =  (Math.pow(distance, -2) - Math.pow(startDistance, -2));
+var sum = Math.pow(radius, 3) + Math.pow(radius2, 3);
+if(distance > (parseFloat(radius) + parseFloat(radius2)))
+    {
+    var factor = 10;
+    var incrementx;
+    var incrementy;
+    var incrementx2;
+    var incrementy2;
+    
+    xone = sphere.position.x;
+    yone = sphere.position.y;
+    xtwo = spheres[spheres.length - 1].position.x;
+    ytwo = spheres[spheres.length - 1].position.y;
+    if(dif == 0)
+    {
+      dif = 0.01;
+    }
+    
+    
+        incrementx = Math.cos(theta) * Math.sqrt(Math.pow(radius2, 3) * dif / (1 + Math.pow(ratio, -3))) / factor;
+        incrementy = Math.sin(theta) * Math.sqrt(Math.pow(radius2, 3) * dif / (1 + Math.pow(ratio, -3))) / factor;
+        incrementx2 = incrementx * Math.pow(radius, 3) / Math.pow(radius2, 3);
+        incrementy2 = incrementy * Math.pow(radius, 3) / Math.pow(radius2, 3);
+    
+    
+    
+    sphere.position.x += incrementx;
+    sphere.position.y += incrementy;
+    spheres[spheres.length - 1].position.x = spheres[spheres.length - 1].position.x - incrementx2;
+    spheres[spheres.length - 1].position.y = spheres[spheres.length - 1].position.y - incrementy2;
+}
+else{
+        incrementx = 0;
+        incrementy = 0;
+        incrementx2 = 0;
+        incrementy2 = 0; 
+        scene.remove(sphere);
+        scene.remove(spheres[spheres.length-1]);
+        
+        radius = Math.pow(sum, 1/3);
+        console.log("Radius of sphere is " + radius);
+        geometry = new THREE.SphereGeometry(radius, 32, 32);
+        sphere = new THREE.Mesh(geometry, material);
+        sphere.position.set(xone, yone, 0);
+        scene.add(sphere);
+        return;
+}
+    }
+else
+return;
+   
+
+  requestAnimationFrame(loop);
+}
+function loopOrbit()
+{
+     var factor2 = 0.1;
+     var x1 = sphere.position.x;
+     var y1 = sphere.position.y;
+     var x2 = spheres[spheres.length - 1].position.x;
+     var y2 = spheres[spheres.length - 1].position.y;
+     var theta2 = Math.atan2((y2 - y1), (x2 - x1));
+     //theta = Math.PI / 4;
+     var vel = factor2 * Math.sqrt(Math.pow(radius, 3) / startDistance);
+     
+     //var orbitx = vel * Math.sin(theta2);
+    
+     var orbity = vel * Math.cos(theta2);
+     var orbitx = - vel * Math.sin(theta2);
+     
+     
+     spheres[spheres.length - 1].position.x = spheres[spheres.length - 1].position.x - orbitx;
+     spheres[spheres.length - 1].position.y = spheres[spheres.length - 1].position.y - orbity;
+     requestAnimationFrame(loopOrbit);
+}
+function addScene()
+{
+    scene.add(spheres[spheres.length - 1]);
+}
+function removeScene()
+{
+    var i;
+    for(i = 0; i < spheres.length - 1; i++)
+    {
+        scene.remove(spheres[i]);
+    }
+}
+function dragStartCallback(event) {
+	startColor = event.object.material.color.getHex();
+	event.object.material.color.setHex(0x000000);
+}
+
+function dragendCallback(event) {
+	event.object.material.color.setHex(startColor);
+}
+var animate = function () {
+	requestAnimationFrame( animate );
+    controls.update();
+
+	renderer.render( scene, camera );
+};
+
+animate();
+		//	init();
+		</script>
+	</body>
+</html>
