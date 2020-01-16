@@ -142,10 +142,18 @@ slider4.oninput = function(){
 }
 onkeydown = function(e)
 {
-    var x = event.keyCode;
+    var x = event.which || event.keyCode;
     if(x == 13)
     {
         setPosition();
+    }
+    if(x == 82)
+    {
+        location.reload();
+    }
+    if(x == 79)
+    {
+        orient();
     }
     if(x == 32 && start == true)
     {
