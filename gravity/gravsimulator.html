@@ -139,6 +139,23 @@ slider3.oninput = function(){
 slider4.oninput = function(){
     dens.innerHTML = "Density: " + (this.value / 10) + " kg/km<sup>3</sup>";
 }
+onkeydown = function(e)
+{
+    var x = event.which || event.keyCode;
+    if(x == 13)
+    {
+        setPosition();
+    }
+    if(x == 32 && start == true)
+    {
+    pause();
+    }
+    else if(x == 32 && start == false)
+    {
+        unpause();
+    }
+    e.preventDefault();
+}
 function setPosition() {
     
     
