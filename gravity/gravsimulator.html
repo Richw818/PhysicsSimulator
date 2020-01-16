@@ -36,11 +36,11 @@
        <button onclick = "unpause()">Unpause</button>
        <button onClick="window.location.reload();">Reset</button>
        <p id = "xdisp">x Value: 5 km</p>
-       <input id = "xval" type = "range" min = "-20" max = "20" value = "5">
+       <input id = "xval" type = "range" min = "-200" max = "200" value = "50">
        <p id = "ydisp">y Value: 5 km</p>
-       <input id = "yval" type = "range" min = "-20" max = "20" value = "5">
+       <input id = "yval" type = "range" min = "-200" max = "200" value = "50">
        <p id = "rdisp">Size: 1 km</p>
-       <input id = "rad" type = "range" min = "1" max = "10" value = "1">
+       <input id = "rad" type = "range" min = "1" max = "100" value = "10">
        <p id = "dens">Density: 1 kg / km<sup>3</sup></p>
        <input id = "den" type = "range" min = "0" max = "100" value = "10">
    </div>
@@ -128,13 +128,13 @@
 //	controls2.addEventListener( 'dragend', dragendCallback );
 //}
 slider1.oninput = function(){
-    xdisp.innerHTML = "x Value: " + this.value + " km";
+    xdisp.innerHTML = "x Value: " + this.value/10 + " km";
 }
 slider2.oninput = function(){
-    ydisp.innerHTML = "y Value: " + this.value + " km";
+    ydisp.innerHTML = "y Value: " + this.value/10 + " km";
 }
 slider3.oninput = function(){
-    rdisp.innerHTML = "Size: " + this.value + " km";
+    rdisp.innerHTML = "Size: " + this.value/10 + " km";
 }
 slider4.oninput = function(){
     dens.innerHTML = "Density: " + (this.value / 10) + " kg/km<sup>3</sup>";
@@ -142,9 +142,9 @@ slider4.oninput = function(){
 function setPosition() {
     
     
-    var x = document.getElementById("xval").value;
-    var y = document.getElementById("yval").value;
-    var size = document.getElementById("rad").value;
+    var x = document.getElementById("xval").value/10;
+    var y = document.getElementById("yval").value/10;
+    var size = document.getElementById("rad").value/10;
     radius2 = size;
     var geometry2 = new THREE.SphereGeometry(radius2, 32, 32);
     var sphere2 = new THREE.Mesh(geometry2, material);
