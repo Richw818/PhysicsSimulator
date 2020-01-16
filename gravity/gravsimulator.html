@@ -35,8 +35,6 @@
        <button onclick = "pause()">Pause</button>
        <button onclick = "unpause()">Unpause</button>
        <button onClick="window.location.reload();">Reset</button>
-       <p id = "orbit"></p>
-       <p id = "orbit"></p>
        <p id = "xdisp">x Value: 5 km</p>
        <input id = "xval" type = "range" min = "-20" max = "20" value = "5">
        <p id = "ydisp">y Value: 5 km</p>
@@ -143,8 +141,7 @@ slider4.oninput = function(){
 }
 function setPosition() {
     
-    if(!orbitmode)
-    {
+    
     var x = document.getElementById("xval").value;
     var y = document.getElementById("yval").value;
     var size = document.getElementById("rad").value;
@@ -165,45 +162,10 @@ function setPosition() {
     addScene();
     
     loop();
-    }
-    else{
-    var x = document.getElementById("xvalue").value;
-    var y = document.getElementById("yvalue").value;
-    var size = document.getElementById("size").value;
-    radius2 = size;
-    var geometry2 = new THREE.SphereGeometry(radius2, 32, 32);
-    var sphere2 = new THREE.Mesh(geometry2, material);
-    sphere2.position.set(x, y, 0);
-    spheres.push(sphere2);
-    xone = sphere.position.x;
-     yone = sphere.position.y;
-     xtwo = spheres[spheres.length - 1].position.x;
-     ytwo = spheres[spheres.length - 1].position.y;
-     startDistance = Math.sqrt(Math.pow((xone - xtwo), 2) + Math.pow((yone - ytwo), 2));
-     addScene();
-     removeScene();
-        loopOrbit();
-    }
+    
+   
 }
-function orbit()
-{
-    orbitmode = !orbitmode;
-    if(orbitmode)
-    {
-        document.getElementById("orbit").innerHTML = "Orbit Mode On";
-    }
-    else
-    {
-        document.getElementById("orbit").innerHTML = "Orbit Mode Off";
-    }
-    if(!orbitmode)
-    {
-        incrementx = 0;
-        incrementy = 0;
-        incrementx2 = 0;
-        incrementy2 = 0;
-    }
-}
+
 function pause()
 {
     start = false;
