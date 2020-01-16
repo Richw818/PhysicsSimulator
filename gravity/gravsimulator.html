@@ -37,12 +37,14 @@
        <button onClick="window.location.reload();">Reset</button>
        <p id = "orbit"></p>
        <p id = "orbit"></p>
-       <p>x Value:</p>
-       <input type="text" name="xvalue" id="xvalue"/>
-       <p>y Value:</p>
-       <input type="text" name="yvalue" id="yvalue"/>
-       <p>Size:</p>
-       <input type="text" name="size" id="size"/>
+       <p id = "xdisp">x Value: 5 km</p>
+       <input id = "xval" type = "range" min = "-20" max = "20" value = "5">
+       <p id = "ydisp">y Value: 5 km</p>
+       <input id = "yval" type = "range" min = "-20" max = "20" value = "5">
+       <p id = "rdisp">Size: 1 km</p>
+       <input id = "rad" type = "range" min = "1" max = "10" value = "1">
+       <p id = "dens">Density: 1 kg / km^3</p>
+       <input id = "den" type = "range" min = "0" max = "100" value = "10">
    </div>
 
 	<body>
@@ -51,6 +53,10 @@
 		
 		<script>
 		    window.scroll(0, 0);
+			var slider1 = document.getElementById("xval");
+		    var slider2 = document.getElementById("yval");
+		    var slider3 = document.getElementById("rad");
+		    var slider4 = document.getElementById("den");
 		    var mouse = new THREE.Vector2();
 		    var start = true;
 		    var count = 0;
@@ -123,23 +129,25 @@
 	//controls2.addEventListener( 'dragstart', dragStartCallback );
 //	controls2.addEventListener( 'dragend', dragendCallback );
 //}
-function onMouseMove( event ) {
-
-	// calculate mouse position in normalized device coordinates
-	// (-1 to +1) for both components
-
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
+slider1.oninput = function(){
+    xdisp.innerHTML = "x Value: " + this.value + " km";
 }
-
+slider2.oninput = function(){
+    ydisp.innerHTML = "y Value: " + this.value + " km";
+}
+slider3.oninput = function(){
+    rdisp.innerHTML = "Size: " + this.value + " km";
+}
+slider4.oninput = function(){
+    dens.innerHTML = "Density: " + (this.value / 10) + " kg/km^3";
+}
 function setPosition() {
     
     if(!orbitmode)
     {
-    var x = document.getElementById("xvalue").value;
-    var y = document.getElementById("yvalue").value;
-    var size = document.getElementById("size").value;
+    var x = document.getElementById("xval").value;
+    var y = document.getElementById("yval").value;
+    var size = document.getElementById("rad").value;
     radius2 = size;
     var geometry2 = new THREE.SphereGeometry(radius2, 32, 32);
     var sphere2 = new THREE.Mesh(geometry2, material);
@@ -236,9 +244,9 @@ if(distance > (parseFloat(radius) + parseFloat(radius2)))
       dif = 0.01;
     }
     
-    
-        incrementx = Math.cos(theta) * Math.sqrt(Math.pow(radius2, 3) * dif / (1 + Math.pow(ratio, -3))) / factor;
-        incrementy = Math.sin(theta) * Math.sqrt(Math.pow(radius2, 3) * dif / (1 + Math.pow(ratio, -3))) / factor;
+    	var density = document.getElementById("den").value / 10;
+        incrementx = Math.cos(theta) * Math.sqrt(Math.pow(density, 3) * Math.pow(radius2, 3) * dif / (1 + Math.pow(ratio, -3))) / factor;
+        incrementy = Math.sin(theta) * Math.sqrt(Math.pow(density, 3) * Math.pow(radius2, 3) * dif / (1 + Math.pow(ratio, -3))) / factor;
         incrementx2 = incrementx * Math.pow(radius, 3) / Math.pow(radius2, 3);
         incrementy2 = incrementy * Math.pow(radius, 3) / Math.pow(radius2, 3);
         var speed1 = 52.54 * 1000 * Math.sqrt(Math.pow(incrementx, 2) + Math.pow(incrementy, 2));
