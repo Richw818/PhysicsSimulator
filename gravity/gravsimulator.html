@@ -36,8 +36,8 @@
        <button onclick = "unpause()">Unpause</button>
        <button onClick="window.location.reload();">Reset</button>
 	<button onclick="window.location.href = 'https://richw818.github.io/';">Back</button>
-	<button onclick="window.location.href = 'gravitation.html';">Explanation</button>
-	   <button onclick="window.location.href = 'keybinds.html';">Keybinds</button>
+	<button id = "exp" onclick="window.location.href = 'gravitation.html';">Explanation</button>
+	   <button id = "key" onclick="window.location.href = 'keybinds.html';">Keybinds</button>
 	<p id = "orbit">Unpaused</p>
        <p id = "xdisp">x Value: 5 km</p>
        <input id = "xval" type = "range" min = "-200" max = "200" value = "50">
@@ -153,6 +153,14 @@ onkeydown = function(e)
     if(x == 82)
     {
         location.reload();
+    }
+if(x == 75)
+    {
+        document.getElementById("key").click();
+    }
+    if(x == 69)
+    {
+        document.getElementById("exp").click();
     }
     if(x == 79)
     {
