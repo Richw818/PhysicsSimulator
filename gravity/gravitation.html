@@ -1,1 +1,25 @@
-
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Gravitation</title>
+   </head>
+   <body>
+      <button onclick="window.location.href = 'gravity/gravsimulator.html' ">Back</button>
+      <p>The formula used to determine the speed and movement of the 'planets' were conservation of energy as well as momentum.</p>
+      <p>Let us denote the two masses of spheres as m<sub>1</sub> and m<sub>2</sub></p>
+      <p>Remember the formula for a volume of the sphere, 4&#960r<sup>3</sup> / 3</p>
+      <p>Multiplying this by our density &#961, and we have our mass for each sphere based on its radius</p>
+      <p>Newton found that the force of gravity between two objects was inversely proportional to their distance squared, and directly proportional to their masses</p>
+      <p>We typically say the formula for the gravitational force is Gm<sub>1</sub>m<sub>2</sub> / r<sup>2</sup>, where G is the universal Gravitational constant</p>
+      <p>When we take the integral of this to find the work done, we get that the portential energy as a function of distance is -Gm<sub>1</sub>m<sub>2</sub> / r. Note the negative sign</p>
+      <p>Now we can begin setting up our energy conservation equation. When we insert the sphere, we know the starting distance, as well as the two masses of the spheres</p>
+      <p>Lets call our starting distance r<sub>0</sub> and our distance at any point in time r</p>
+      <p>Next, we have to consider the kinetic energy of our 'planets', which can be represented by the formula mv<sup>2</sup> / 2</p>
+      <p>We then get the formula -Gm<sub>1</sub>m<sub>2</sub> / r<sub>0</sub> = -Gm<sub>1</sub>m<sub>2</sub> / r + m<sub>1</sub>v<sub>1</sub><sup>2</sup> / 2 + m<sub>2</sub>v<sub>2</sub><sup>2</sup> / 2, the formula is made easier since there is no starting velocity for either planet</p>
+      <p>Note that we know all these values except for v<sub>1</sub> and v<sub>2</sub>, and this is where the conservation of momentum comes in.</p>
+      <p>The momentum, or often known as mv, is 0 at the start in the system since neither planet is moving. If we consider the system of planets as a whole, there is no change in total momentum since the gravity between the two planets is an internal force</p>
+      <p>We thus have the equation m<sub>1</sub>v<sub>1</sub> + m<sub>2</sub>v<sub>2</sub> = 0, leaving us with two equations and two unknowns</p>
+      <p>The actual values for v<sub>1</sub> and v<sub>2</sub> in terms of the other variables are not very nice, however, it can be noted that the velocity of either planet is approximately inversely proportional to the square root of their distance</p>
+      <p>This approximation becomes more and more accurate as the starting distance increases</p>
+   </body>
+</html>
