@@ -35,7 +35,7 @@
        <button onclick = "pause()">Pause</button>
        <button onclick = "unpause()">Unpause</button>
        <button onClick="window.location.reload();">Reset</button>
-	<button onclick="window.location.href = 'https://richw818.github.io/';">Back</button>
+	<button id = "back" onclick="window.location.href = 'https://richw818.github.io/';">Back</button>
 	<button id = "exp" onclick="window.location.href = 'gravitation.html';">Explanation</button>
 	   <button id = "key" onclick="window.location.href = 'keybinds.html';">Keybinds</button>
 	<p id = "orbit">Unpaused</p>
@@ -153,6 +153,10 @@ onkeydown = function(e)
     if(x == 82)
     {
         location.reload();
+    }
+	if(x == 66)
+    {
+        document.getElementById("back").click();
     }
 if(x == 75)
     {
