@@ -4,7 +4,7 @@
       <title>Gravitation</title>
    </head>
    <body>
-      <button onclick="window.location.href = 'https://richw818.github.io/gravity/gravsimulator.html' ">Back</button>
+      <button id = "back" onclick="window.location.href = 'https://richw818.github.io/gravity/gravsimulator.html' ">Back</button>
       <p>The formula used to determine the speed and movement of the 'planets' were conservation of energy as well as momentum.</p>
       <p>Let us denote the two masses of spheres as m<sub>1</sub> and m<sub>2</sub></p>
       <p>Remember the formula for a volume of the sphere, 4&#960r<sup>3</sup> / 3</p>
@@ -21,5 +21,14 @@
       <p>We thus have the equation m<sub>1</sub>v<sub>1</sub> + m<sub>2</sub>v<sub>2</sub> = 0, leaving us with two equations and two unknowns</p>
       <p>The actual values for v<sub>1</sub> and v<sub>2</sub> in terms of the other variables are not very nice, however, it can be noted that the velocity of either planet is approximately inversely proportional to the square root of their distance</p>
       <p>This approximation becomes more and more accurate as the starting distance increases</p>
+      <script>
+          onkeydown = function(e){
+              var x = event.which || event.keyCode;
+                if(x == 66)
+                {
+                    document.getElementById("back").click();
+                }
+            }
+      </script>
    </body>
 </html>
