@@ -35,7 +35,7 @@
        <button onclick = "pause()">Pause</button>
        <button onclick = "unpause()">Unpause</button>
        <button onClick="window.location.reload();">Reset</button>
-	<p id = "orbit></p>
+	<p id = "orbit">Unpaused</p>
        <p id = "xdisp">x Value: 5 km</p>
        <input id = "xval" type = "range" min = "-200" max = "200" value = "50">
        <p id = "ydisp">y Value: 5 km</p>
@@ -195,12 +195,12 @@ function setPosition() {
 function pause()
 {
     start = false;
-    document.getElementById("orbit").innerHTML = "Animation Paused";
+    document.getElementById("orbit").innerHTML = "Paused";
 }
 function unpause()
 {
     start = true;
-    document.getElementById("orbit").innerHTML = "";
+    document.getElementById("orbit").innerHTML = "Unpaused";
     loop();
 }
 function orient()
