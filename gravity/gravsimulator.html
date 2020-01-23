@@ -27,6 +27,7 @@
               <p id = "speed1">Speed: 0 m/s</p>
               <p id = "radius1">Radius: 0.5 km</p>
               <p id = "position1">Position: (0, 0)</p>
+		<p id = "dist">Distance: 0 km</p>
        </div>
        
    <div>
@@ -237,7 +238,8 @@ if(distance > (parseFloat(radius) + parseFloat(radius2)))
     var incrementy;
     var incrementx2;
     var incrementy2;
-    
+    document.getElementById("dist").innerHTML = "Distance: " + Math.round(distance * 100) / 100 + " km";
+
     xone = sphere.position.x;
     yone = sphere.position.y;
     xtwo = spheres[spheres.length - 1].position.x;
@@ -275,7 +277,7 @@ else{
         scene.remove(spheres[spheres.length-1]);
         document.getElementById("speed1").innerHTML = "Speed: " + 0 + " m/s";
         document.getElementById("speed2").innerHTML = "Speed: " + 0 + " m/s";
-
+	document.getElementById("dist").innerHTML = "Distance: 0 km";
         radius = Math.pow(sum, 1/3);
         document.getElementById("radius1").innerHTML = "Radius: " + Math.round(radius * 100)/100 + " km";
         document.getElementById("radius2").innerHTML = "Radius: 0 km";
