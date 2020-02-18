@@ -1,0 +1,265 @@
+                <html>
+	<head>
+		<title>Particle</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+			#strength {
+			    float:right;
+			    padding: 20px;
+			}
+		
+			<link rel="icon" href="pictures/Sphere.png">    
+		</style>
+	</head>
+       
+   <div>
+       <button onclick="setPosition()">Insert New Sphere</button>
+       <button onclick="orient()">Orient</button>
+       <button onClick="window.location.reload();">Reset</button>
+       <button id = "back" onclick="window.location.href = 'https://user.tjhsst.edu/2020rwang/';">Back</button>
+        <button id = "exp" onclick="window.location.href = 'gravitation';">Explanations</button>
+        <button id = "key" onclick="window.location.href = 'keybinds';">Keybinds</button>
+       <p id = "orbit"></p>
+       <p id = "xdisp">x Value: 0 ER</p>
+       <input id = "xval" type = "range" min = "-200" max = "200" value = "0">
+       <p id = "ydisp">y Value: 0 ER</p>
+       <input id = "yval" type = "range" min = "-200" max = "200" value = "0">
+       <p id = "zdisp">z Value: 0 ER</p>
+       <input id = "zval" type = "range" min = "-200" max = "200" value = "0">
+       <p id = "rdisp">Charge: 0 C</p>
+       <input id = "charge" type = "range" min = "-200" max = "200" value = "0">
+   </div>
+	<body>
+		<script src="js/three.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		<script src="js/slider.js"></script>
+		<script>
+		    window.scroll(0, 0);
+		    var slider1 = document.getElementById("xval");
+		    var slider2 = document.getElementById("yval");
+		    var slider3 = document.getElementById("zval");
+		    var slider4 = document.getElementById("charge");
+		    var mouse = new THREE.Vector2();
+		    var start = true;
+		    var count = 0;
+		    var objects = [];
+			var scene = new THREE.Scene();
+			var spheres = [];
+			var charges = [];
+			var arrows = [];
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+            var fields = 0;
+            
+            
+           
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setClearColor( 0x000000, 1);
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+            var material = new THREE.MeshNormalMaterial();
+            //var material = new THREE.MeshBasicMaterial();
+            
+            radius = 1;
+            
+
+            
+            
+			camera.position.z = 15;
+			//camera.position.x = 10;
+			//camera.position.y = 10;
+			
+			
+            var controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+            //controls.update() must be called after any manual changes to the camera's transform
+            //camera.position.set( 0, 20, 100 );
+            controls.update();
+            function init() {
+	            scene.add( new THREE.AmbientLight( 0x0f0f0f ) );
+
+	            var light = new THREE.SpotLight( 0xffffff, 1.5 );
+	            light.position.set( 0, 500, 2000 );
+
+	            //scene.add(light);
+
+	            //var geometry = new THREE.BoxGeometry( 40, 40, 40 );
+	            //var geometry = new THREE.SphereGeometry( 40, 40, 40 );
+
+	            //for (var i = 0; i < 100; i++) {
+		            //var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
+
+		            //object.position.x = Math.random() * 1000 - 500;
+		            //object.position.y = Math.random() * 600 - 300;
+		            //object.position.z = Math.random() * 800 - 400;
+
+		            //object.castShadow = true;
+		            //object.receiveShadow = true;
+
+	            	//scene.add( object );
+
+	            	objects.push( cube );
+	}
+
+    //controls2 = new THREE.DragControls( objects, camera, renderer.domElement );
+	//controls2.addEventListener( 'dragstart', dragStartCallback );
+//	controls2.addEventListener( 'dragend', dragendCallback );
+//}
+
+slider1.oninput = function(){
+    xdisp.innerHTML = "x Value: " + this.value / 10 + " ER";
+}
+slider2.oninput = function(){
+    ydisp.innerHTML = "y Value: " + this.value / 10 + " ER";
+}
+slider3.oninput = function(){
+    zdisp.innerHTML = "z Value: " + this.value / 10 + " ER";
+}
+slider4.oninput = function(){
+    rdisp.innerHTML = "Charge: " + this.value / 10 + "x10^-19 C";
+}
+
+function setPosition() {
+    
+    
+    var x = document.getElementById("xval").value / 10;
+    var y = document.getElementById("yval").value / 10;
+    var z = document.getElementById("zval").value / 10;
+    var char = document.getElementById("charge").value / 10;
+    radius2 = 1;
+    var geometry2 = new THREE.SphereGeometry(radius2, 32, 32);
+    var sphere2 = new THREE.Mesh(geometry2, material);
+    sphere2.position.set(x, y, z);
+    spheres.push(sphere2);
+    charges.push(char);
+    addScene();
+    clearArrow();
+    field();
+    
+    
+    
+}
+onkeydown = function(e)
+{
+    var x = event.which || event.keyCode;
+    if(x == 13)
+    {
+        setPosition();
+    }
+    if(x == 66)
+    {
+        document.getElementById("back").click();
+    }
+    if(x == 82)
+    {
+        location.reload();
+    }
+    if(x == 75)
+    {
+        document.getElementById("key").click();
+    }
+    if(x == 69)
+    {
+        document.getElementById("exp").click();
+    }
+    if(x == 79)
+    {
+        orient();
+    }
+    if(x == 32 && start == true)
+    {
+        pause();
+    }
+    else if(x == 32 && start == false)
+    {
+        unpause();
+    }
+    e.preventDefault();
+}
+
+function orient()
+{
+    camera.position.z = 15;
+    camera.position.x = 0;
+    camera.position.y = 0;
+}
+function field()
+{
+    
+
+    
+    var i, j;
+for(i = -20; i < 20; i = i + 1)
+{
+    for(j = -20; j < 20; j = j + 1)
+    {
+    var xf = 0;
+    var yf = 0;
+    var zf = 0;
+    var l;
+    for(l = 0; l < spheres.length; l = l + 1)
+    {
+        var dist = Math.sqrt(Math.pow(spheres[l].position.x - i, 2) + Math.pow(spheres[l].position.y - j, 2) + Math.pow(spheres[l].position.z, 2));
+        xf += - 9 * Math.pow(10, -9) * charges[l] * (spheres[l].position.x - i) / (Math.pow(dist, 3));
+        yf += - 9 * Math.pow(10, -9) * charges[l] * (spheres[l].position.y - j) / (Math.pow(dist, 3));
+        zf += - 9 * Math.pow(10, -9) * charges[l] * (spheres[l].position.z) / (Math.pow(dist, 3));
+    }
+    fields = Math.sqrt(Math.pow(xf, 2) + Math.pow(yf, 2) + Math.pow(zf, 2));
+var dir = new THREE.Vector3( xf, yf, zf );
+
+//normalize the direction vector (convert to vector of length 1)
+dir.normalize();
+
+var origin = new THREE.Vector3( i, j, 0 );
+var length = 1;
+var hex = 0xffff00;
+
+var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+arrows.push(arrowHelper);
+scene.add( arrowHelper );
+    }
+}
+
+
+  
+}
+function clearArrow()
+{
+    var i;
+    for(i = 0; i < arrows.length; i++)
+    {
+        scene.remove(arrows[i]);
+    }
+}
+function addScene()
+{
+    scene.add(spheres[spheres.length - 1]);
+}
+function removeScene()
+{
+    var i;
+    for(i = 0; i < spheres.length - 1; i++)
+    {
+        scene.remove(spheres[i]);
+    }
+}
+function dragStartCallback(event) {
+	startColor = event.object.material.color.getHex();
+	event.object.material.color.setHex(0x000000);
+}
+
+function dragendCallback(event) {
+	event.object.material.color.setHex(startColor);
+}
+
+
+var animate = function () {
+	requestAnimationFrame( animate );
+    controls.update();
+	renderer.render( scene, camera );
+};
+animate();
+		//	init();
+		</script>
+	</body>
+</html>
