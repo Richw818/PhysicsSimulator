@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Keybinds</title>
+   </head>
+   <body>
+      <button id = "back" onclick="window.location.href = 'gravsimulator.html' ">Back</button>
+      <p>Enter = Insert Sphere</p>
+      <p>Space = Pause/Unpause</p>
+      <p>R = Reset</p>
+      <p>O = Orient</p>
+      <p>K = Keybinds</p>
+      <p>E = Explanation</p>
+      <p>B = Back</p>
+      <script>
+          onkeydown = function(e){
+              var x = event.which || event.keyCode;
+                if(x == 66)
+                {
+                    document.getElementById("back").click();
+                }
+            }
+      </script>
+   </body>
+</html>
