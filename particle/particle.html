@@ -12,6 +12,12 @@
 			<link rel="icon" href="pictures/Sphere.png">    
 		</style>
 	</head>
+	<div id = "strength">
+           <p id = "str"></p>
+           <p id = "xdir"></p>
+           <p id = "ydir"></p>
+           <p id = "zdir"></p>
+       </div>
        
    <div>
        <button onclick="setPosition()">Insert New Particle</button>
@@ -19,6 +25,7 @@
        <button onClick="window.location.reload();">Reset</button>
        <button id = "back" onclick="window.location.href = 'https://richw818.github.io/';">Back</button>
         <button id = "key" onclick="window.location.href = 'keybinds.html';">Keybinds</button>
+	   <button id = "ef" onclick="fmag()">Magnitude</button>
        <p id = "orbit"></p>
        <p id = "xdisp">x Value: 0 ER</p>
        <input id = "xval" type = "range" min = "-200" max = "200" value = "0">
@@ -180,6 +187,42 @@ function orient()
     camera.position.z = 15;
     camera.position.x = 0;
     camera.position.y = 0;
+}
+function fmag()
+{
+    var x = document.getElementById("xval").value / 10;
+    var y = document.getElementById("yval").value / 10;
+    var char = document.getElementById("charge").value / 10;
+    var xf = 0;
+    var yf = 0;
+    var zf = 0;
+    var l;
+    
+    for(l = 0; l < spheres.length; l = l + 1)
+    {
+        var dist = Math.sqrt(Math.pow(spheres[l].position.x - x, 2) + Math.pow(spheres[l].position.y - y, 2) + Math.pow(spheres[l].position.z, 2));
+        xf += -    9 * Math.pow(10, 2) *  charges[l] * (spheres[l].position.x - x) / (Math.pow(dist, 3));
+        yf += -   9 * Math.pow(10, 2) * charges[l] * (spheres[l].position.y - y) / (Math.pow(dist, 3));
+        zf += -   9 * Math.pow(10, 2) * charges[l] * (spheres[l].position.z) / (Math.pow(dist, 3));
+    }
+    fields =  Math.sqrt(Math.pow(xf, 2) + Math.pow(yf, 2) + Math.pow(zf, 2));
+    
+    document.getElementById("str").innerHTML = "Magnitude of Electric Field at: (" + x + " fm, " + y + " fm) is " + Math.round(fields * 100) / 100 + "x10^18 N/C";
+    document.getElementById("xdir").innerHTML = "In x Direction: " + Math.round(xf * 100)/100 + "x10^18 N/C";
+    document.getElementById("ydir").innerHTML = "In y Direction: " + Math.round(yf * 100) / 100 + "x10^18 N/C";
+    document.getElementById("zdir").innerHTML = "In z Direction: " + Math.round(zf * 100) / 100 + "x10^18 N/C";
+    if(xf == 0)
+    {
+          document.getElementById("xdir").innerHTML = "In x Direction: 0 N/C";
+    }
+    if(yf == 0)
+    {
+          document.getElementById("ydir").innerHTML = "In y Direction: 0 N/C";
+    }
+    if(zf == 0)
+    {
+          document.getElementById("zdir").innerHTML = "In z Direction: 0 N/C";
+    }
 }
 function field()
 {
