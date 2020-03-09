@@ -207,7 +207,7 @@ function fmag()
     }
     fields =  Math.sqrt(Math.pow(xf, 2) + Math.pow(yf, 2) + Math.pow(zf, 2));
     
-    document.getElementById("str").innerHTML = "Magnitude of Electric Field at: (" + x + " fm, " + y + " fm) is " + Math.round(fields * 100) / 100 + "x10^18 N/C";
+    document.getElementById("str").innerHTML = "Magnitude of Electric Field at: (" + x + " fm, " + y + " fm, " + z + "fm) is " + Math.round(fields * 100) / 100 + "x10^18 N/C";
     document.getElementById("xdir").innerHTML = "In x Direction: " + Math.round(xf * 100)/100 + "x10^18 N/C";
     document.getElementById("ydir").innerHTML = "In y Direction: " + Math.round(yf * 100) / 100 + "x10^18 N/C";
     document.getElementById("zdir").innerHTML = "In z Direction: " + Math.round(zf * 100) / 100 + "x10^18 N/C";
