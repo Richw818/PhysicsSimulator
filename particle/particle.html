@@ -26,6 +26,7 @@
        <button id = "back" onclick="window.location.href = 'https://richw818.github.io/';">Back</button>
         <button id = "key" onclick="window.location.href = 'keybinds.html';">Keybinds</button>
 	   <button id = "ef" onclick="fmag()">Magnitude</button>
+	   <button id = "p1" onclick="line()">Line of Charge</button>
        <p id = "orbit"></p>
        <p id = "xdisp">x Value: 0 ER</p>
        <input id = "xval" type = "range" min = "-200" max = "200" value = "0">
@@ -35,6 +36,8 @@
        <input id = "zval" type = "range" min = "-200" max = "200" value = "0">
        <p id = "rdisp">Charge: 0 C</p>
        <input id = "charge" type = "range" min = "-200" max = "200" value = "0">
+	   <p id = "lamb">Charge Per Unit Length: 0 C / m</p>
+       <input id = "cperl" type = "range" min = "-200" max = "200" value = "0">
    </div>
 	<body>
 		<script src="three.js"></script>
@@ -45,6 +48,7 @@
 		    var slider2 = document.getElementById("yval");
 		    var slider3 = document.getElementById("zval");
 		    var slider4 = document.getElementById("charge");
+			var slider5 = document.getElementById("cperl");
 		    var mouse = new THREE.Vector2();
 		    var start = true;
 		    var count = 0;
@@ -53,6 +57,7 @@
 			var spheres = [];
 			var charges = [];
 			var arrows = [];
+			var lines = [];
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
             var fields = 0;
             
@@ -123,6 +128,9 @@ slider3.oninput = function(){
 slider4.oninput = function(){
     rdisp.innerHTML = "Charge: " + this.value / 10 + "x10^-19 C";
 }
+slider5.oninput = function(){
+    lamb.innerHTML = "Charge Per Unit Length: " + this.value / 10 + "x10^-6 C/m";
+}
 
 function setPosition() {
     
@@ -188,6 +196,80 @@ function orient()
     camera.position.x = 0;
     camera.position.y = 0;
 }
+function line()
+{
+    removeScene();
+    lined = true;
+    clearArrow();
+    clearLine();
+    var material = new THREE.LineBasicMaterial({
+	color: 0x0000ff
+        });
+
+    var points = [];
+    points.push( new THREE.Vector3( - 1000, 0, 0 ) );
+    points.push( new THREE.Vector3( 1000, 0, 0 ) );
+
+    var geometry = new THREE.BufferGeometry().setFromPoints( points );
+
+    var line = new THREE.Line( geometry, material );
+    lines.push(line);
+    scene.add( line );
+    var c = document.getElementById("cperl").value / 10;
+    var x;
+if(c > 0)
+{
+    for(x = -20; x <= 20; x = x + 2)
+    {
+        
+        var i;
+    for(i = 0; i < 8; i++ )
+    {
+        var j;
+        for(j = 1; j <= 7; j = j + 2)
+        {
+        var dir = new THREE.Vector3( 0, Math.sin( i * Math.PI / 4), Math.cos( i * Math.PI / 4) );
+
+//normalize the direction vector (convert to vector of length 1)
+        dir.normalize();
+        var origin = new THREE.Vector3( x,  j * Math.sin( i * Math.PI / 4) , j * Math.cos( i * Math.PI / 4) );
+        var length = 1 / j;
+        var hex = 0xffff00;
+
+        var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+        arrows.push(arrowHelper);
+        scene.add( arrowHelper );
+        }
+    }
+    }
+}
+if(c < 0)
+{
+    for(x = -20; x <= 20; x = x + 2)
+    {
+        
+        var i;
+    for(i = 0; i < 8; i++ )
+    {
+        var j;
+        for(j = 1; j <= 7; j = j + 2)
+        {
+        var dir = new THREE.Vector3( 0,  - Math.sin( i * Math.PI / 4), - Math.cos( i * Math.PI / 4) );
+
+//normalize the direction vector (convert to vector of length 1)
+        dir.normalize();
+        var origin = new THREE.Vector3( x,  j * Math.sin( i * Math.PI / 4) , j * Math.cos( i * Math.PI / 4) );
+        var length = 1 / j;
+        var hex = 0xffff00;
+
+        var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+        arrows.push(arrowHelper);
+        scene.add( arrowHelper );
+        }
+    }
+    }
+}
+}
 function fmag()
 {
     var x = document.getElementById("xval").value / 10;
@@ -229,7 +311,7 @@ function field()
 {
     
 
-    
+    clearLine();
     var i, j;
 for(i = -20; i < 20; i = i + 1)
 {
@@ -271,6 +353,15 @@ function clearArrow()
     for(i = 0; i < arrows.length; i++)
     {
         scene.remove(arrows[i]);
+    }
+}
+function clearLine()
+{
+    var i;
+    lined = false;
+    for(i = 0; i < lines.length; i++)
+    {
+        scene.remove(lines[i]);
     }
 }
 function addScene()
